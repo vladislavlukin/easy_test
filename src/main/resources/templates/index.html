@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Character Frequency Calculator</title>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<h1>Character Frequency Calculator</h1>
+<form action="/calculate-frequency" method="get">
+    <label for="inputString">Введите строку:</label>
+    <input type="text" id="inputString" name="input" placeholder="Введите строку">
+    <button type="submit">Вычислить</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+    function calculateFrequency() {
+        const inputString = document.getElementById('inputString').value;
+        const resultDiv = document.getElementById('result');
+
+        fetch('/calculate-frequency?input=' + inputString)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    resultDiv.innerHTML = 'Ошибка: ' + data.error;
+                } else {
+                    resultDiv.innerHTML = 'Результат:<br>' + JSON.stringify(data, null, 2);
+                }
+            })
+            .catch(error => {
+                resultDiv.innerHTML = 'Произошла ошибка при запросе к серверу: ' + error.message;
+            });
+    }
+</script>
+</body>
+</html>
+
